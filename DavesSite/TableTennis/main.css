@@ -1,0 +1,80 @@
+﻿body {
+}
+
+#title {
+    width: 100%;
+    height: 100px;
+}
+
+table {
+    border-spacing: 0px;
+}
+
+.tbl-general {
+    width: 100%;
+    table-layout: fixed;
+    text-align: center;
+}
+
+.tbl-general .hdr td {
+    border-bottom: 1px solid black;
+}
+
+.tbl-centered {
+    margin: auto;
+}
+
+.tbl-general.top tr td {
+    vertical-align: top;
+}
+
+.btn {
+    background-color: black;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    line-height: 35px;
+    height:35px;
+    text-align: center;
+}
+
+.btn.center {
+    margin: auto;
+}
+
+.btn.menubtn {
+    line-height: 40px;
+    height: 40px;
+    width: 100%;
+    border-radius: 0px;
+}
+
+.btn.selected {
+    cursor: auto;
+    background-color: yellow;
+}
+
+.btn.selected:hover {
+    background-color: yellow;
+}
+
+.btn:hover {
+    background-color: #AAA;
+}
+
+.page {
+    width: 100%;
+}
+
+.matchlistitem:hover {
+    background-color: lightgrey;
+    cursor: pointer;
+}
+
+.matchlistitem.selected {
+    background-color: darkgrey;
+}
+
+.setlistitem {
+    background-color: darkgrey;
+}

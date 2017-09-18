@@ -1,0 +1,100 @@
+﻿<html>
+<head>
+    <title></title>
+
+    <link rel="stylesheet" type="text/css" href="../TableTennis/main.css" />
+    <script language="javascript" type="text/javascript" src="../content/js/jquery-2.1.4.min.js"></script>
+    <script language="javascript" type="text/javascript" src="../TableTennis/main.js"></script>
+</head>
+<body>
+    <div id="title">
+        <div style="width:100%;height:100%;overflow:hidden">
+            <img src="../content/images/table_tennis.jpg" style="width:100%;top:-80%;position:relative" />
+        </div>
+    </div>
+    <div id="menu">
+        <table style="width:100%">
+            <tr>
+                <td style="text-align:center"><div class="menubtn btn" menu="divLoad">LOAD</div></td>
+                <td style="text-align:center"><div class="menubtn btn" menu="divRank">RANK</div></td>
+                <td style="text-align:center"><div class="menubtn btn" menu="divGames">GAMES</div></td>
+                <td style="text-align:center;display:none"><div class="menubtn btn" menu="divScoring">SCORING</div></td>
+            </tr>
+        </table>
+    </div>
+    <div id="page" style="padding:15px">
+        <div class="page" id="divLoad" style="display:none">
+            Load the datafile: <input id="fileLoader" type="file" /><br /><br /><br /><br />
+            <div id="btnLoadCreate" class="btn" style="width:200px">CREATE NEW FILE</div><a id="aLoadDownload" style="display:none" download="data.txt">DOWNLOAD NEW FILE</a>
+        </div>
+        <div class="page" id="divRank" style="display:none">
+            <table class="tbl-general">
+                <tr>
+                    <td>
+                        <h2>Champion: <span id="spnRankChampion"></span></h2>
+                    </td>
+                    <td>
+                        <h2>Dunce: <span id="spnRankDunce"></span></h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <h3>Rank Table</h3>
+                        <table id="tblRank" class="tbl-general tbl-centered">
+                            <tr class="permanent hdr">
+                                <td style="width:60px">Rank Number</td>
+                                <td>Name</td>
+                                <td style="width:80px">Points</td>
+								<td>Matches<br />Played/Won/Loss</td>
+								<td style="width:80px">Win/Loss Ratio</td>
+								<td>Sets<br />Played/Won/Loss</td>
+								<td style="width:80px">Win/Loss Ratio</td>
+								<td>Points Per<br />Match/Set</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="page" id="divGames" style="display:none">
+            <table class="tbl-general top">
+                <tr>
+                    <td>
+                        <h3>Previous Matches</h3><br />
+                        <table id="tblMatches" class="tbl-general">
+                            <tr class="permanent hdr">
+                                <td>Match Number</td>
+                                <td>Player 1</td>
+                                <td>Result</td>
+                                <td>Player 2</td>
+                                <td>Date</td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>
+                        <h3>Match Creator</h3><br />
+                        <div id="divMatchCreator"></div>
+                    </td>
+                    <td>
+                        <h3>Add A Player</h3><br />
+                        <span>Name: </span><input id="txbAddPlayerName" type="text" /><br /><br />
+                        <span>Color: </span><input id="txbAddPlayerColor" type="color" /><br /><br />
+                        <div id="btnAddPlayer" class="btn center" style="width:150px">ADD PLAYER</div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+		<div class="page" id="divScoring" style="display:none">
+			<table class="tbl-general top">
+				<tr>
+					<td>
+						<h3>Enter Match Data</h3><br />
+					</td>
+					<td>
+					</td>
+				</tr>
+			</table>
+		</div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,47 @@
+﻿body {
+    background-color: black;
+    color: white;
+}
+
+#divMenu {
+    display: block;
+    height: 50px;
+    width: 100%;
+    background-color: #82eded;
+    border-bottom: 1px solid black;
+}
+
+tr.headerRow td {
+    background-color: yellow;
+}
+
+tr.headerRow.underline td {
+    border-bottom: 1px solid black;
+}
+
+td.selected {
+    background-color: rgba(76, 255, 0, 0.4) !important;
+}
+
+.ui-selectable {
+    cursor: pointer;
+}
+.ui-selecting { background: #FECA40; }
+.ui-selected { background: #F39814; color: white; }
+
+.btn {
+    height: 30px;
+    padding: 4px;
+    border: 1px solid black;
+    background-color: darkgrey;
+
+    border-radius: 7px;
+
+    margin-bottom: 4px;
+    margin-right: 4px;
+}
+
+.btn:hover {
+    cursor: pointer;
+    background-color: lightgrey;
+}

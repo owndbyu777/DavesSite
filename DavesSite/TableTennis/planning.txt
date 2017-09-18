@@ -1,0 +1,12 @@
+﻿how to update match...
+
+v/ - Can loop through all current matches and redo the scores for them
+
+- Could take off the points of the match then re-add the new points and scores for the match
+
+- Could work out what is different from the new match to the old match and make the required changes
+
+
+
+_-----------------------
+Have to add a pointsplayedto to match

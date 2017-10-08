@@ -95,6 +95,7 @@
     <Content Include="content\js\jquery-ui.min.js" />
     <Content Include="content\js\PCT.js" />
     <Content Include="content\js\XMLCompiler.js" />
+    <Content Include="ListEverything\ListEverything.aspx" />
     <Content Include="packages.config" />
     <Content Include="PCT\Comms.aspx" />
     <Content Include="PCT\PCT.aspx" />
@@ -142,6 +143,15 @@
     </Compile>
     <Compile Include="default.aspx.designer.cs">
       <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ListEverything\Item.cs" />
+    <Compile Include="ListEverything\Section.cs" />
+    <Compile Include="ListEverything\ListEverything.aspx.cs">
+      <DependentUpon>ListEverything.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ListEverything\ListEverything.aspx.designer.cs">
+      <DependentUpon>ListEverything.aspx</DependentUpon>
     </Compile>
     <Compile Include="PCT\Comms.aspx.cs">
       <DependentUpon>Comms.aspx</DependentUpon>

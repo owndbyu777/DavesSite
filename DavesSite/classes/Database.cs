@@ -10,25 +10,23 @@ namespace DavesSite {
     public static class Database {
         public static bool DoesDatabaseExist(Databases dtb) {
             switch (dtb) {
-                case Databases.PCT:
-                    return File.Exists(GetDatabasePath(Databases.PCT));
                 default:
-                    return false;
+                    return File.Exists(GetDatabasePath(dtb));
             }
         }
 
         public static void Create(Databases dtb) {
             switch (dtb) {
-                case Databases.PCT:
-                    SQLiteConnection.CreateFile(GetDatabasePath(Databases.PCT));
+                default:
+                    SQLiteConnection.CreateFile(GetDatabasePath(dtb));
                     break;
             }
         }
 
         public static void Delete(Databases dtb) {
             switch (dtb) {
-                case Databases.PCT:
-                    File.Delete(GetDatabasePath(Databases.PCT));
+                default:
+                    File.Delete(GetDatabasePath(dtb));
                     break;
             }
         }
@@ -37,6 +35,10 @@ namespace DavesSite {
             switch (dtb) {
                 case Databases.PCT:
                     return Directory.GetCurrentDirectory() + "\\pct.sqlite";
+                case Databases.Bills:
+                    return Directory.GetCurrentDirectory() + "\\bills.sqlite";
+                case Databases.ListEverything:
+                    return Directory.GetCurrentDirectory() + "\\listEverything.sqlite";
                 default:
                     return "";
             }
@@ -72,15 +74,15 @@ namespace DavesSite {
 
         private string getDatabaseString(Databases dtb) {
             switch (dtb) {
-                case Databases.PCT:
-                    return "Data Source=" + Database.GetDatabasePath(Databases.PCT) + "; Version=3;";
                 default:
-                    return "";
+                    return "Data Source=" + Database.GetDatabasePath(dtb) + "; Version=3;";
             }
         }
     }
 
     public enum Databases {
-        PCT
+        PCT,
+        Bills,
+        ListEverything
     }
 }

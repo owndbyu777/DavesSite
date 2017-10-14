@@ -89,11 +89,13 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="content\css\ListEverything.css" />
     <Content Include="content\images\table_tennis.jpg" />
     <Content Include="content\js\globals.js" />
     <Content Include="content\js\jquery-3.1.1.js" />
     <Content Include="content\js\jquery-ui.min.js" />
     <Content Include="content\js\PCT.js" />
+    <Content Include="content\js\ListEverything.js" />
     <Content Include="content\js\XMLCompiler.js" />
     <Content Include="ListEverything\ListEverything.aspx" />
     <Content Include="packages.config" />

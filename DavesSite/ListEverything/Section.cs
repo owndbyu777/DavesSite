@@ -13,16 +13,14 @@ namespace DavesSite.ListEverything {
         private ObjectState state;
         private bool isInDatabase = false;
 
-        private long d_ID = 0;
-        private decimal d_Temp = 0;
-        private decimal d_Humi = 0;
-        private int d_SoilM = 0;
-        private int d_Light = 0;
+        private long s_ID = 0;
+        private string s_Name = "";
+        private string s_Description = "";
 
         public Section() {
             state = ObjectState.Added;
             isInDatabase = false;
-            d_ID = --nextId;
+            s_ID = --nextId;
         }
 
         public Section(int id, DatabaseConnection cnn = null) {
@@ -33,15 +31,13 @@ namespace DavesSite.ListEverything {
             }
 
             SQLiteCommand cmd = cnn.Connection.CreateCommand();
-            cmd.CommandText = "SELECT * FROM Data WHERE d_ID = @d_ID";
-            cmd.Parameters.Add(new SQLiteParameter("@d_ID", d_ID));
+            cmd.CommandText = "SELECT * FROM Section WHERE s_ID = @s_ID";
+            cmd.Parameters.Add(new SQLiteParameter("@s_ID", s_ID));
 
             var rdr = cmd.ExecuteReader();
             while (rdr.Read()) {
-                d_Temp = (decimal)rdr["d_Temp"];
-                d_Humi = (decimal)rdr["d_Humi"];
-                d_SoilM = (int)rdr["d_SoilM"];
-                d_Light = (int)rdr["d_Light"];
+                s_Name = (string)rdr["s_Name"];
+                s_Description = (string)rdr["s_Description"];
 
                 isInDatabase = true;
             }
@@ -52,61 +48,43 @@ namespace DavesSite.ListEverything {
             }
         }
 
-        public long DataId {
+        public long SectionId {
             get {
-                return d_ID;
+                return s_ID;
             }
         }
 
-        public decimal Temperature {
+        public string Name {
             get {
-                return d_Temp;
+                return s_Name;
             }
             set {
-                d_Temp = value;
+                s_Name = value;
                 MarkAsChanged();
             }
         }
 
-        public decimal Humidity {
+        public string Description {
             get {
-                return d_Humi;
+                return s_Description;
             }
             set {
-                d_Humi = value;
-                MarkAsChanged();
-            }
-        }
-
-        public int SoilMoisture {
-            get {
-                return d_SoilM;
-            }
-            set {
-                d_SoilM = value;
-                MarkAsChanged();
-            }
-        }
-
-        public int Light {
-            get {
-                return d_Light;
-            }
-            set {
-                d_Light = value;
+                s_Description = value;
                 MarkAsChanged();
             }
         }
 
         public void AddDataToSB(StringBuilder sb) {
-            sb.Append(d_Temp).Append(", ").Append(d_Humi).Append(", ").Append(d_SoilM).Append(", ").Append(d_Light);
+            throw new NotImplementedException();
+            //sb.Append(d_Temp).Append(", ").Append(d_Humi).Append(", ").Append(d_SoilM).Append(", ").Append(d_Light);
         }
 
 
         #region "Static functions"
 
         static public void AddParamNamesToSB(StringBuilder sb) {
-            sb.Append("Temperature, Humidity, Soil Moisture, Light");
+            //sb.Append("Temperature, Humidity, Soil Moisture, Light");
+            throw new NotImplementedException();
         }
 
         #endregion
@@ -124,17 +102,15 @@ namespace DavesSite.ListEverything {
                 }
 
                 SQLiteCommand cmd = cnn.Connection.CreateCommand();
-                cmd.CommandText = "SELECT * FROM Data";
+                cmd.CommandText = "SELECT * FROM Section";
                 if (!String.IsNullOrEmpty(sqlWhereClause)) cmd.CommandText += "WHERE " + sqlWhereClause;
 
                 var rdr = cmd.ExecuteReader();
                 while (rdr.Read()) {
                     Section d = new Section() {
-                        d_ID = (long)rdr["d_ID"],
-                        d_Temp = (decimal)rdr["d_Temp"],
-                        d_Humi = (decimal)rdr["d_Humi"],
-                        d_SoilM = (int)rdr["d_SoilM"],
-                        d_Light = (int)rdr["d_Light"]
+                        s_ID = (long)rdr["s_ID"],
+                        s_Name = (string)rdr["s_Name"],
+                        s_Description = (string)rdr["s_Description"]
                     };
 
                     d.state = ObjectState.Nothing;
@@ -150,7 +126,7 @@ namespace DavesSite.ListEverything {
 
                 return list;
             } catch (Exception ex) {
-                throw new Exception("An error occured while getting Data objects WHERE from the database: " + ex.Message);
+                throw new Exception("An error occured while getting Section objects WHERE from the database: " + ex.Message);
             }
         }
 
@@ -170,7 +146,7 @@ namespace DavesSite.ListEverything {
                     Delete(cnn);
                     break;
                 default:
-                    throw new Exception("An error occurred while committing a Data object: ObjectState not valid!");
+                    throw new Exception("An error occurred while committing a Section object: ObjectState not valid!");
             }
         }
 
@@ -183,16 +159,14 @@ namespace DavesSite.ListEverything {
                 }
 
                 var cmd = cnn.Connection.CreateCommand();
-                cmd.CommandText = "INSERT INTO Data (d_Temp, d_Humi, d_SoilM, d_Light) VALUES(@d_Temp, @d_Humi, @d_SoilM, @d_Light); SELECT last_insert_rowid();";
-                cmd.Parameters.Add(new SQLiteParameter("@d_Temp", d_Temp));
-                cmd.Parameters.Add(new SQLiteParameter("@d_Humi", d_Humi));
-                cmd.Parameters.Add(new SQLiteParameter("@d_SoilM", d_SoilM));
-                cmd.Parameters.Add(new SQLiteParameter("@d_Light", d_Light));
+                cmd.CommandText = "INSERT INTO Section (s_Name, s_Description) VALUES(@s_Name, @s_Description); SELECT last_insert_rowid();";
+                cmd.Parameters.Add(new SQLiteParameter("@s_Name", s_Name));
+                cmd.Parameters.Add(new SQLiteParameter("@s_Description", s_Description));
 
                 try {
-                    d_ID = (long)cmd.ExecuteScalar();
+                    s_ID = (long)cmd.ExecuteScalar();
                 } catch (Exception ex) {
-                    throw new Exception("An error occured while executing the insert command on a Data in the database: " + ex.Message);
+                    throw new Exception("An error occured while executing the insert command on a Section in the database: " + ex.Message);
                 }
 
                 isInDatabase = true;
@@ -202,7 +176,7 @@ namespace DavesSite.ListEverything {
                     cnn.Dispose();
                 }
             } catch (Exception ex) {
-                throw new Exception("An error occured while creating a Data in the database: " + ex.Message);
+                throw new Exception("An error occured while creating a Section in the database: " + ex.Message);
             }
         }
 
@@ -216,22 +190,19 @@ namespace DavesSite.ListEverything {
 
 
                 var cmd = cnn.Connection.CreateCommand();
-                cmd.CommandText = "UPDATE Data SET " +
-                    "d_Temp = @d_Temp, " +
-                    "d_Humi = @d_Humi, " +
-                    "d_SoilM = @d_SoilM, " +
-                    "d_Light = @d_Light " +
-                    "WHERE d_ID = @d_ID";
-                cmd.Parameters.Add(new SQLiteParameter("@d_Temp", d_Temp));
-                cmd.Parameters.Add(new SQLiteParameter("@d_Humi", d_Humi));
-                cmd.Parameters.Add(new SQLiteParameter("@d_SoilM", d_SoilM));
-                cmd.Parameters.Add(new SQLiteParameter("@d_Light", d_Light));
-                cmd.Parameters.Add(new SQLiteParameter("@d_ID", d_ID));
+                cmd.CommandText = "UPDATE Section SET " +
+                    "s_Name = @s_Name, " +
+                    "s_Description = @s_Description, " +
+                    "s_Section = @s_Section " +
+                    "WHERE s_ID = @s_ID";
+                cmd.Parameters.Add(new SQLiteParameter("@s_Name", s_Name));
+                cmd.Parameters.Add(new SQLiteParameter("@s_Description", s_Description));
+                cmd.Parameters.Add(new SQLiteParameter("@s_ID", s_ID));
 
                 try {
-                    d_ID = (int)cmd.ExecuteScalar();
+                    s_ID = (int)cmd.ExecuteScalar();
                 } catch (Exception ex) {
-                    throw new Exception("An error occured while executing the insert command on a Data in the database: " + ex.Message);
+                    throw new Exception("An error occured while executing the insert command on a Section in the database: " + ex.Message);
                 }
 
                 isInDatabase = true;
@@ -241,7 +212,7 @@ namespace DavesSite.ListEverything {
                     cnn.Dispose();
                 }
             } catch (Exception ex) {
-                throw new Exception("An error occured while updating a Data in the database: " + ex.Message);
+                throw new Exception("An error occured while updating a Section in the database: " + ex.Message);
             }
         }
 
@@ -269,7 +240,7 @@ namespace DavesSite.ListEverything {
                         cnn.Dispose();
                     }
                 } catch (Exception ex) {
-                    throw new Exception("An error occured while deleting a Data from the database." + ex.Message);
+                    throw new Exception("An error occured while deleting a Section from the database." + ex.Message);
                 }
             } else {
                 throw new Exception("Cannot delete.");

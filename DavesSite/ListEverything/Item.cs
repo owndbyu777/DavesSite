@@ -51,7 +51,7 @@ namespace DavesSite.ListEverything {
             }
         }
 
-        public long DataId {
+        public long ItemId {
             get {
                 return i_ID;
             }

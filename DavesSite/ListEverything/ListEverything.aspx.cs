@@ -5,6 +5,8 @@ using System.Web.Script.Serialization;
 using System.Text;
 using System.Data.SQLite;
 
+//TODO: NEXT, write front end to check stuff, write JS and stuff for this
+
 namespace DavesSite.ListEverything {
 
     public partial class ListEverything :  classes.DavesSitePage {
@@ -57,12 +59,17 @@ namespace DavesSite.ListEverything {
             try {
 
                 SQLiteCommand cmd = new SQLiteCommand(cnn.Connection);
-                cmd.CommandText = "CREATE TABLE Data (" +
-                    "d_ID INTEGER PRIMARY KEY NOT NULL, " +
-                    "d_Temp DECIMAL(3, 2) NOT NULL, " +
-                    "d_Humi DECIMAL(2, 1) NOT NULL, " +
-                    "d_SoilM INT NOT NULL, " +
-                    "d_Light INT NOT NULL)";
+                cmd.CommandText = "CREATE TABLE Section (" +
+                    "s_ID INTEGER PRIMARY KEY NOT NULL, " +
+                    "s_Name TEXT NOT NULL, " +
+                    "s_Description TEXT NOT NULL)";
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = "CREATE TABLE Item (" +
+                    "i_ID INTEGER PRIMARY KEY NOT NULL, " +
+                    "i_Name TEXT NOT NULL, " +
+                    "i_Description TEXT NOT NULL, " +
+                    "i_Section INT NOT NULL)";
                 cmd.ExecuteNonQuery();
 
                 return "{\"success\": true }";
@@ -78,18 +85,15 @@ namespace DavesSite.ListEverything {
             try {
 
                 Section d = new Section() {
-                    Temperature = 30.5M,
-                    Humidity = 12.5M,
-                    SoilMoisture = 80,
-                    Light = 10
+                    Name = "Sprouting",
+                    Description = "List of things to sprout and how to sprout them for foods."
                 };
                 d.Commit();
 
-                Section d2 = new Section() {
-                    Temperature = 3.5M,
-                    Humidity = 80.5M,
-                    SoilMoisture = 2,
-                    Light = 100
+                Item i2 = new Item() {
+                    Name = "Alfalfa",
+                    Description = "Rinse. Soak 4 hrs, then store for 6-8 days and gtg.",
+                    Section = d
                 };
                 d.Commit();
 
@@ -105,14 +109,14 @@ namespace DavesSite.ListEverything {
                 var sb = new StringBuilder();
                 var list = Section.GetObjectsWhere("");
 
-                foreach (Section d in list) {
-                    sb.Append("ID: ").Append(d.DataId)
-                      .Append(", Temp: ").Append(d.Temperature)
-                      .Append(", Humi: ").Append(d.Humidity)
-                      .Append(", SoilM: ").Append(d.SoilMoisture)
-                      .Append(", Light: ").Append(d.Light)
-                      .Append("<br>");
-                }
+                //foreach (Section d in list) {
+                //    sb.Append("ID: ").Append(d.DataId)
+                //      .Append(", Temp: ").Append(d.Temperature)
+                //      .Append(", Humi: ").Append(d.Humidity)
+                //      .Append(", SoilM: ").Append(d.SoilMoisture)
+                //      .Append(", Light: ").Append(d.Light)
+                //      .Append("<br>");
+                //}
 
                 return "{\"success\": true, \"data\": \"" + Globals.EncodeJsString(sb.ToString()) + "\" }";
             } catch (Exception ex) {
@@ -136,6 +140,48 @@ namespace DavesSite.ListEverything {
             Update = 2,
             Read = 3,
             Delete = 4
+        }
+
+        [AjaxPro.AjaxMethod]
+        public string search(string jsonDetails) {
+            try {
+                JavaScriptSerializer s = new JavaScriptSerializer();
+                Dictionary<string, object> dic = s.Deserialize<Dictionary<string, object>>(jsonDetails);
+
+                string search = (string)dic["search"];
+
+                var alSec = Section.GetObjectsWhere("s_Name = " + search);
+
+                if (alSec.Count > 0) {
+                    var alItem = Item.GetObjectsWhere("i_Section = " + alSec[0].SectionId.ToString());
+                    var sb = new StringBuilder();
+                    var first = true;
+                    for (var i = 0; i < alItem.Count; i++) {
+                        if (first) first = false; else sb.Append(", ");
+                        sb.Append("{")
+                            .Append("\"id\":\"").Append(alItem[i].ItemId).Append("\"")
+                            .Append("\"name\":\"").Append(Globals.EncodeJsString(alItem[i].Name)).Append("\"")
+                            .Append("\"desc\":\"").Append(Globals.EncodeJsString(alItem[i].Description)).Append("\" }");
+                    }
+                    return "{\"success\": true, \"items\": [" + sb.ToString() + "] }";
+                } else {
+                    return "{\"success\": true }";
+                }
+            } catch (Exception ex) {
+                return "{\"success\": false, \"error\": \"" + Globals.EncodeJsString(ex.Message) + "\"}";
+            }
+        }
+
+        [AjaxPro.AjaxMethod]
+        public string add(string jsonDetails) {
+            try {
+                JavaScriptSerializer s = new JavaScriptSerializer();
+                Dictionary<string, object> dic = s.Deserialize<Dictionary<string, object>>(jsonDetails);
+
+                return "{\"success\": true }";
+            } catch (Exception ex) {
+                return "{\"success\": false, \"error\": \"" + Globals.EncodeJsString(ex.Message) + "\"}";
+            }
         }
     }
 }
